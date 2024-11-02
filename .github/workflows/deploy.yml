@@ -30,6 +30,8 @@ jobs:
       - name: Log in to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          region: us-east-1
 
       - name: Build, tag, and push Docker image
         env:
@@ -53,7 +55,7 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: us-east-1
-          INSTANCE_ID: i-0123456789abcdef0  # Replace with your EC2 instance ID
+          INSTANCE_ID: i-06f99e390170f99ff  # Replace with your EC2 instance ID
           IMAGE_TAG: latest
         run: |
           aws ssm send-command \
