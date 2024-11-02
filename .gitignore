@@ -8,3 +8,5 @@ venv/
 
 # LocalStack
 volume/
+
+.ssh
