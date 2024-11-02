@@ -95,7 +95,11 @@ jobs:
               echo "region=${AWS_REGION}" >> ~/.aws/config
               aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
               docker pull ${ECR_REGISTRY}:${IMAGE_TAG}
-              docker stop ${IMAGE_TAG} || true
-              docker rm ${IMAGE_TAG} || true
-              docker run -d -p 80:5000 --name my-flask-app ${ECR_REGISTRY}:${IMAGE_TAG}
+              docker stop my-flask-app || true
+              docker rm my-flask-app || true
+              docker run -d -p 80:5000 --name my-flask-app \
+                -e AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} \
+                -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
+                -e AWS_REGION=${AWS_REGION} \
+                ${ECR_REGISTRY}:${IMAGE_TAG}
             EOF
