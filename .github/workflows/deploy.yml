@@ -79,23 +79,23 @@ jobs:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             AWS_REGION: us-east-1
-      run: |
-        ssh -o StrictHostKeyChecking=no -t $EC2_USER@$EC2_HOST << EOF
-          set -x
-          sudo dnf update -y
-          sudo dnf install docker -y
-          sudo systemctl start docker
-          sudo systemctl enable docker
-          sudo usermod -a -G docker ec2-user
-          mkdir -p ~/.aws
-          echo "[default]" > ~/.aws/credentials
-          echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
-          echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
-          echo "[default]" > ~/.aws/config
-          echo "region=${AWS_REGION}" >> ~/.aws/config
-          aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
-          docker pull ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
-          docker stop my-flask-app || true
-          docker rm my-flask-app || true
-          docker run -d -p 80:5000 --name my-flask-app ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
-        EOF
+          run: |
+            ssh -o StrictHostKeyChecking=no -t $EC2_USER@$EC2_HOST << EOF
+              set -x
+              sudo dnf update -y
+              sudo dnf install docker -y
+              sudo systemctl start docker
+              sudo systemctl enable docker
+              sudo usermod -a -G docker ec2-user
+              mkdir -p ~/.aws
+              echo "[default]" > ~/.aws/credentials
+              echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+              echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+              echo "[default]" > ~/.aws/config
+              echo "region=${AWS_REGION}" >> ~/.aws/config
+              aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+              docker pull ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+              docker stop my-flask-app || true
+              docker rm my-flask-app || true
+              docker run -d -p 80:5000 --name my-flask-app ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
+            EOF
