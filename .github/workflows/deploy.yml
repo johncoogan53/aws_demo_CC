@@ -81,6 +81,7 @@ jobs:
             AWS_REGION: us-east-1
           run: |
             ssh -o StrictHostKeyChecking=no -t $EC2_USER@$EC2_HOST << 'EOF'
+              set -x
               sudo dnf update -y
               sudo dnf install docker -y
               sudo systemctl start docker
