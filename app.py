@@ -7,7 +7,12 @@ from botocore.exceptions import ClientError
 from io import BytesIO
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-here'  # Change this in production
+BUCKET_NAME = 'aws-cc-demo-bucket'
+
+# Retrieve AWS credentials from environment variables
+aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
+aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
+aws_region = os.getenv('AWS_REGION')
 
 # AWS Configuration
 def get_aws_client():
@@ -23,10 +28,13 @@ def get_aws_client():
             region_name='us-east-1'
         )
     else:
-        return boto3.client('s3')
-
+        return boto3.client(
+            's3',
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key,
+            region_name=aws_region
+        )
 # S3 bucket configuration
-BUCKET_NAME = os.getenv('S3_BUCKET_NAME', 'my-file-upload-bucket')
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def allowed_file(filename):
