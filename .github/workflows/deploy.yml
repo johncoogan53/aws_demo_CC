@@ -102,4 +102,5 @@ jobs:
                 -e AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} \
                 -e AWS_REGION=${AWS_REGION} \
                 ${ECR_REGISTRY}:${IMAGE_TAG}
+              docker exec my-flask-app sh -c 'echo $AWS_ACCESS_KEY_ID && echo $AWS_SECRET_ACCESS_KEY && echo $AWS_REGION'
             EOF
