@@ -56,7 +56,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -97,6 +97,10 @@ jobs:
             sudo systemctl start docker
             sudo systemctl enable docker
             sudo usermod -a -G docker ec2-user
+            echo "aws_access_key_id=$AWS_ACCESS_KEY_ID" >> ~/.aws/credentials
+            echo "aws_secret_access_key=$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+            echo "[default]" > ~/.aws/config
+            echo "region=$AWS_REGION" >> ~/.aws/config
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker stop my-flask-app || true
