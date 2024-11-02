@@ -1,0 +1,6 @@
+flask
+boto3
+localstack
+python-dotenv
+awscli
+awscli-local

@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+COPY requirements-release.txt . 
+RUN pip install -r requirements-release.txt
+
+COPY . .
+
+# Expose port 5000
+EXPOSE 5000
+
+CMD ["flask", "run", "--host=0.0.0.0"]
