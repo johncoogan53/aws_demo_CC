@@ -11,13 +11,13 @@ runlocal: down up create-bucket-local
 up:
 	docker-compose up -d
 	@echo "LocalStack is starting..."
-	@echo "Also starting Flask app..."
+	@echo "Starting Flask app..."
 
 create-bucket-local:
 	@echo "Waiting for LocalStack to be ready..."
 	@sleep 5  # Adjust sleep time if necessary
 	@echo "Creating S3 bucket..."
-	@awslocal s3 mb s3://my-file-upload-bucket
+	@awslocal s3 mb s3://aws-cc-demo-bucket
 	@echo "Bucket created."
 
 

@@ -8,7 +8,7 @@ from io import BytesIO
 
 app = Flask(__name__)
 BUCKET_NAME = 'aws-cc-demo-bucket'
-
+app.secret_key = os.getenv('SECRET_KEY')
 # Retrieve AWS credentials from environment variables
 aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID')
 aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY')
